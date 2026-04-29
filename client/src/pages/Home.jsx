@@ -2,6 +2,26 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { chatUrl } from '../api';
 import './Home.css';
 
+/** Scroll-triggered fade-up for sections (respects reduced-motion via CSS) */
+function useScrollReveal() {
+  useEffect(() => {
+    const nodes = document.querySelectorAll('.home [data-reveal]');
+    if (!nodes.length) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            en.target.classList.add('is-visible');
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -32px 0px' }
+    );
+    nodes.forEach((n) => obs.observe(n));
+    return () => obs.disconnect();
+  }, []);
+}
+
 const CHIPS = [
   'I overthink everything',
   'I feel different from others',
@@ -44,6 +64,8 @@ export default function Home() {
   const textareaRef = useRef(null);
   const responseRef = useRef(null);
   const msgEndRef   = useRef(null);
+
+  useScrollReveal();
 
   useEffect(() => {
     if (messages.length) {
@@ -117,6 +139,7 @@ export default function Home() {
 
   return (
     <div className="home">
+      <div className="home-sky" aria-hidden="true" />
 
       {/* ── Daily check-in banner ── */}
       {bannerVisible && (
@@ -150,14 +173,14 @@ export default function Home() {
         </div>
 
         {/* Hero */}
-        <section className="hero">
+        <section className="hero hero-entrance">
           <span className="brand-label">CHECKMYTHOUGHTS</span>
           <h1 className="hero-title">Is This Normal?</h1>
           <p className="hero-sub">Type a thought or feeling and get instant reassurance.</p>
         </section>
 
         {/* Tool */}
-        <section className="tool">
+        <section className="tool tool-entrance">
           <div className="tool-card">
             <textarea
               ref={textareaRef}
@@ -198,7 +221,7 @@ export default function Home() {
 
         {/* ── Conversation / Response area ── */}
         {messages.length > 0 && (
-          <section className="responses" ref={responseRef}>
+          <section className="responses responses-enter" ref={responseRef}>
             <div className="responses-header">
               <span className="responses-label">Your conversation</span>
               <button className="btn-clear" onClick={() => setMessages([])}>
@@ -284,14 +307,14 @@ export default function Home() {
 
         {/* ── How it works ── */}
         <section className="how">
-          <h2 className="section-title">How it works</h2>
+          <h2 className="section-title section-title-reveal" data-reveal>How it works</h2>
           <div className="how-steps">
             {[
               { n: '1', icon: '✍️', title: 'Share your thought', desc: 'Type anything you\'ve been feeling or worrying about. No right or wrong way to start.' },
               { n: '2', icon: '🔍', title: 'Psyche reflects', desc: 'Using 6+ therapy frameworks, Psyche reads patterns in your words and offers grounded insight.' },
               { n: '3', icon: '💡', title: 'Gain clarity', desc: 'Walk away with a new perspective and one gentle, actionable step you can take today.' },
-            ].map(s => (
-              <div key={s.n} className="how-step">
+            ].map((s) => (
+              <div key={s.n} className="how-step" data-reveal>
                 <div className="how-num">{s.n}</div>
                 <div className="how-icon">{s.icon}</div>
                 <h3>{s.title}</h3>
@@ -302,7 +325,7 @@ export default function Home() {
         </section>
 
         {/* ── FAQ ── */}
-        <section className="faq">
+        <section className="faq" data-reveal>
           <h2 className="section-title">FAQ</h2>
           <div className="faq-list">
             {FAQ.map((item, i) => (
@@ -318,7 +341,7 @@ export default function Home() {
         </section>
 
         {/* ── Footer ── */}
-        <footer className="footer">
+        <footer className="footer" data-reveal>
           <div className="footer-brand">
             <span className="brand-label">CHECKMYTHOUGHTS</span>
           </div>
