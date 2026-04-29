@@ -106,7 +106,7 @@ export default function Chat({ onBack }) {
           <div className="chat-bot-info">
             <div className="chat-bot-avatar">🧠</div>
             <div>
-              <div className="chat-bot-name">Dr. Mira</div>
+              <div className="chat-bot-name">Psyche AI</div>
               <div className="chat-bot-status">
                 <span className="status-dot" />
                 {loading ? 'Reflecting…' : 'Online · Psychological AI'}
@@ -133,7 +133,7 @@ export default function Chat({ onBack }) {
         {isEmpty ? (
           <div className="chat-welcome">
             <div className="welcome-avatar pulse-ring">🧠</div>
-            <div className="welcome-title">Hello, I'm Dr. Mira.</div>
+            <div className="welcome-title">Hello, I'm Psyche.</div>
             <p className="welcome-sub">
               Share what's on your mind — a feeling, a thought pattern, a fear, or
               something you've been carrying. I'm here to reflect, not to judge.
@@ -171,7 +171,7 @@ export default function Chat({ onBack }) {
         {loading && (
           <div className="typing-msg">
             <div className="msg-avatar" aria-hidden>🧠</div>
-            <div className="typing-bubble" aria-label="Dr. Mira is thinking">
+            <div className="typing-bubble" aria-label="Psyche is thinking">
               <div className="typing-dot" />
               <div className="typing-dot" />
               <div className="typing-dot" />

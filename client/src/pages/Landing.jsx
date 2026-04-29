@@ -84,7 +84,7 @@ export default function Landing({ onStart }) {
               <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden>
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
               </svg>
-              Talk to Dr. Mira
+              Talk to Psyche
             </button>
             <button className="btn-hero-outline" onClick={() => document.getElementById('how')?.scrollIntoView({ behavior: 'smooth' })}>
               See how it works
@@ -96,7 +96,7 @@ export default function Landing({ onStart }) {
             <div className="pc-header">
               <div className="pc-avatar">🧠</div>
               <div className="pc-meta">
-                <strong>Dr. Mira</strong>
+                <strong>Psyche AI</strong>
                 <span>● Online · Reflecting with you</span>
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function Landing({ onStart }) {
           <div className="how-grid">
               {[
               { n: '01', title: 'Share freely', desc: "Type whatever you're feeling — a worry, a pattern, a fear. No accounts, no tracking, no judgment. Just your words.", delay: 0 },
-              { n: '02', title: 'AI reflects', desc: "Dr. Mira listens across your full conversation, drawing on 6+ psychological frameworks to understand what you're experiencing.", delay: 1 },
+              { n: '02', title: 'AI reflects', desc: "Psyche listens across your full conversation, drawing on 6+ psychological frameworks to understand what you're experiencing.", delay: 1 },
               { n: '03', title: 'Receive insight', desc: 'Get compassionate, specific insight — not generic phrases. Understand the why behind what you feel, and one small step forward.', delay: 2 },
             ].map((s) => (
               <div key={s.n} className={`how-step reveal reveal-delay-${s.delay}`}>
@@ -166,10 +166,10 @@ export default function Landing({ onStart }) {
           </div>
           <div className="features-grid">
             {[
-              { icon: '🧩', cls: 'fi-v', h: 'Real conversation memory', p: 'Dr. Mira remembers your last 20 exchanges — she builds on what you share instead of asking you to repeat yourself.' },
+              { icon: '🧩', cls: 'fi-v', h: 'Real conversation memory', p: 'Psyche remembers your last 20 exchanges — building on what you share instead of asking you to repeat yourself.' },
               { icon: '🌿', cls: 'fi-t', h: 'Compassionate, not clinical', p: 'Warm, specific, human language — validated by psychological frameworks but never made you feel like a case study.' },
               { icon: '🔐', cls: 'fi-a', h: '100% anonymous', p: 'No account required. No data stored. Your conversation lives only in your browser session, then vanishes.' },
-              { icon: '⚡', cls: 'fi-ro', h: 'Topic-focused safety', p: 'Dr. Mira stays in her lane. Ask about a recipe or a code bug — she gently redirects back to your inner world.' },
+              { icon: '⚡', cls: 'fi-ro', h: 'Topic-focused safety', p: 'Psyche stays in its lane. Ask about a recipe or a code bug — it gently redirects back to your inner world.' },
             ].map((f, i) => (
               <div key={f.h} className={`feat-card reveal reveal-delay-${i % 3}`}>
                 <div className={`feat-icon ${f.cls}`}>{f.icon}</div>
@@ -242,7 +242,7 @@ export default function Landing({ onStart }) {
         <div className="l-wrap">
           <div className="l-cta reveal">
             <h2>Your mind deserves<br /><em style={{ fontStyle: 'italic', background: 'var(--grad-hero)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>to be understood.</em></h2>
-            <p>Start a conversation with Dr. Mira. Share anything that's been weighing on you — she's here to reflect, not to judge.</p>
+            <p>Start a conversation with Psyche. Share anything that's been weighing on you — it's here to reflect, not to judge.</p>
             <button className="btn-hero-primary" onClick={onStart} style={{ margin: '0 auto' }}>
               <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden>
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
