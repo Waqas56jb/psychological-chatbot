@@ -2,10 +2,14 @@ node_modules/
 
 # Secrets — never commit
 .env
-.env.*
+.env.local
+.env.*.local
 client/.env
-client/.env.*
+client/.env.local
 server/.env
+
+# .env.production is safe to commit (contains only a public URL, no keys)
+# client/.env.production  ← intentionally NOT ignored
 
 # Build output
 client/dist/
