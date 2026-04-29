@@ -54,8 +54,8 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
-  background: var(--bg);
-  color: var(--text);
+  background: #ffffff;
+  color: #111827;
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -73,9 +73,9 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg2); }
-::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.35); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.6); }
+::-webkit-scrollbar-track { background: #F1F5F9; }
+::-webkit-scrollbar-thumb { background: #BAE6FD; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #7DD3FC; }
 
 /* Scroll reveal */
 .reveal {
