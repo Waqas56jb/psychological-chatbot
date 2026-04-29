@@ -13,23 +13,48 @@ if (!process.env.OPENAI_API_KEY) {
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const defaultOrigins = 'http://localhost:5173,http://localhost:4173,http://127.0.0.1:5173';
-const allowedOrigins = (process.env.CORS_ORIGINS || defaultOrigins).split(',').map(s => s.trim()).filter(Boolean);
-
+/* ── Security headers ── */
 app.use(helmet({ contentSecurityPolicy: false }));
+
+/* ── CORS — allow all origins (public psychological reflection tool) ── */
 app.use(cors({
-  origin: (origin, cb) => (!origin || allowedOrigins.includes(origin)) ? cb(null, true) : cb(null, false),
+  origin: '*',
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
+/* Explicit preflight for all routes */
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    return res.status(204).end();
+  }
+  next();
+});
+
 app.use(express.json({ limit: '20kb' }));
 
-const globalLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 300, standardHeaders: true, legacyHeaders: false, message: { error: 'Too many requests. Please try again later.' } });
-const aiLimiter    = rateLimit({ windowMs: 10 * 60 * 1000, max: 20,  standardHeaders: true, legacyHeaders: false, message: { error: 'Rate limit reached. Please wait a few minutes.' } });
+/* ── Rate limiting ── */
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 300,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Please try again later.' },
+});
+const aiLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Rate limit reached. Please wait a few minutes.' },
+});
 
 app.use(globalLimiter);
 
-/* ── POST /api/analyze — single structured reflection ── */
+/* ── POST /api/analyze ── */
 app.post('/api/analyze', aiLimiter, async (req, res) => {
   const validation = validateThought(req.body?.thought);
   if (!validation.ok) return res.status(validation.status).json({ error: validation.error });
@@ -44,7 +69,7 @@ app.post('/api/analyze', aiLimiter, async (req, res) => {
   }
 });
 
-/* ── POST /api/chat — conversational with memory ── */
+/* ── POST /api/chat ── */
 app.post('/api/chat', aiLimiter, async (req, res) => {
   const { messages } = req.body;
 
@@ -74,8 +99,22 @@ app.post('/api/chat', aiLimiter, async (req, res) => {
 });
 
 /* ── GET /api/health ── */
-app.get('/api/health', (req, res) => res.json({ status: 'ok', model: process.env.OPENAI_MODEL || 'gpt-4o' }));
+app.get('/api/health', (_req, res) => res.json({
+  status: 'ok',
+  service: 'CheckMyThoughts API',
+  timestamp: new Date().toISOString(),
+  model: process.env.OPENAI_MODEL || 'gpt-4o',
+}));
 
-app.listen(PORT, () => {
-  console.log(`\n  CheckMyThoughts API — http://localhost:${PORT}\n  CORS: ${allowedOrigins.join(', ')}\n`);
-});
+/* ─────────────────────────────────────────────────────────────────────────────
+   Export for Vercel serverless — also works as a normal Node server locally.
+   When Vercel imports this file it gets module.exports = app (the Express app).
+   When run with `node server.js` directly, app.listen() starts the server.
+───────────────────────────────────────────────────────────────────────────── */
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`\n  CheckMyThoughts API — http://localhost:${PORT}\n`);
+  });
+}
+
+module.exports = app;
